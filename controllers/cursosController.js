@@ -1,49 +1,57 @@
 const { Cursos } = require('../models');
 
 exports.getAll = async (req, res) => {
-  const result = await Cursos.findAll();
-  return res.json(result);
-}
-
-exports.findOneCourse = async (req, res) => {
-  try {
-    const { id } = req.query;
-    const result = await Cursos.findOne({ id: id });
-    return res.json(result);
-  } catch (err) {
+  Cursos.findAll({})
+  .then((data) => {
+    return res.data(data);
+  })
+  .catch((err) => {
     throw new Error(err);
-  }
+  })
 }
 
-exports.createCourse = async (req, res) => {
-  try {
-    const body = req.body.course;
-    const data = await Cursos.create(body);
-    return res.json(data)
-  } catch (err) {
-    throw new Error(err);
-  }
-}
-
-exports.updateCourse = async (req, res) => {
-  try {
-    const body = req.body.course;
-    const { id } = req.body;
-    const options = {
-      where: {
-        id: id
-      },
-      returning: true
-    }
-    const data = await Cursos.update(body, options);
+exports.findOneCourse = (req, res) => {
+  const { courseId } = req.body;
+  Cursos.findById(courseId)
+  .then((data) => {
     return res.json(data);
-  } catch (err) {
+  })
+  .catch((err) => {
     throw new Error(err);
-  }
+  });
+}
+
+exports.createCourse = (req, res) => {
+  const body = req.body.course
+  Cursos.create(body)
+  .then((data) => {
+    return res.json(data)
+  })
+  .catch((err) => {
+    throw new Error(err);
+  });
+}
+
+exports.updateCourse = (req, res) => {
+  const { courseId } = req.body;
+  const body = req.body.course;
+  const options = {
+    where: {
+      id: courseId
+    }
+  };
+
+  Cursos.update(body, options)
+  .then((data) => {
+    return res.json(data);
+  })
+  .catch((err) => {
+    throw new Error(err);
+  });
 }
 
 exports.deleteCourse = (req, res) => {
-  const { id } = req.body.course;
+  const { courseId } = req.body;
   const options = {
     where: {
       id: id
@@ -72,11 +80,3 @@ exports.completedCourses = (req, res) => {
       throw new Error(err);
     })
 }
-
-// // exports.courseByTag = async (req, res) => {
-
-// // }
-
-// exports.courseByDuration = (req, res) => {
-  
-// }

@@ -1,9 +1,15 @@
 const router = require('express').Router();
 const LivrosController = require('../controllers/livrosController');
 
-router.get('/all', LivrosController.getLivros);
-router.get('/livro/:id', LivrosController.findOne);
-router.post('/create', LivrosController.create);
-router.put('/livro/:id', LivrosController.updateLivro);
+router.route('/all')
+  .get(LivrosController.getBooks)
+
+router.route('/livro/:id')
+  .get(LivrosController.findOne)
+  .put(LivrosController.updateBook)
+  .delete(LivrosController.deleteBook)
+
+router.route('/create')
+  .post(LivrosController.createBook)
 
 module.exports = router;

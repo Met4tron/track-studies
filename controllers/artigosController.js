@@ -11,7 +11,7 @@ exports.getArticles = (req, res) => {
 }
 
 exports.getArticle = (req, res) => {
-  const { id } = req.body.article;
+  const { articleId } = req.body;
   Artigos.findOne({ id: id })
   .then((data) => {
     return res.json(data);

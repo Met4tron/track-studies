@@ -1,0 +1,19 @@
+# docker-compose.yml
+version: "2"
+services:
+  app:
+    build: .
+    command: yarn run start
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+    ports:
+      - "3000:3000"
+  postgres:
+    image: postgres:9.6.8-alpine
+    ports:
+      - "5433:5432"
